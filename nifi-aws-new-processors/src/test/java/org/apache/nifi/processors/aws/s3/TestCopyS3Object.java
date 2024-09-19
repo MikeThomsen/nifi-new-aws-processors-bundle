@@ -3,6 +3,7 @@ package org.apache.nifi.processors.aws.s3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CopyObjectRequest;
 import org.apache.nifi.processor.ProcessContext;
+import org.apache.nifi.processor.exception.ProcessException;
 import org.apache.nifi.processors.aws.AbstractAWSProcessor;
 import org.apache.nifi.util.TestRunner;
 import org.apache.nifi.util.TestRunners;
@@ -59,7 +60,7 @@ public class TestCopyS3Object {
     @Test
     public void testS3ErrorHandling() {
         when(mockS3Client.copyObject(any(CopyObjectRequest.class)))
-                .thenThrow(new RuntimeException("Manually triggered error"));
+                .thenThrow(new ProcessException("Manually triggered error"));
 
         runner.enqueue("".getBytes(StandardCharsets.UTF_8), setupRun());
         runner.run();
